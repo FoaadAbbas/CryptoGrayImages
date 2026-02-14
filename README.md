@@ -1,131 +1,139 @@
-🔒 Twofish Hybrid Encryption System
+# 🔒 Twofish Hybrid Encryption System
 
-A high-performance Image & Text Encryption Tool that combines the ease of use of a Python GUI with the raw speed of a C-based cryptographic engine. This project implements the Twofish block cipher in OFB (Output Feedback) mode, integrated with Schnorr Signatures and EC-ElGamal for secure key exchange.
-🚀 Features
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue) ![C](https://img.shields.io/badge/C-C99-00599C) ![License](https://img.shields.io/badge/License-MIT-green) ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-lightgrey)
 
-    Hybrid Architecture: The core encryption logic is written in C and compiled into a dynamic library (.dll / .so), accessed by Python via ctypes for maximum performance.
+A high-performance **Image & Text Encryption Tool** that combines the ease of use of a **Python GUI** with the raw speed of a **C-based cryptographic engine**. This project implements the **Twofish** block cipher in **OFB (Output Feedback) mode**, integrated with **Schnorr Signatures** and **EC-ElGamal** for secure key exchange.
 
-    Twofish Algorithm: Full implementation of the Twofish block cipher (AES finalist) with 128/192/256-bit key support.
+---
 
-    OFB Mode: Uses Output Feedback Mode to function as a stream cipher, allowing for encryption of files of any size without padding.
+## 🎥 Live Demo
 
-    Digital Signatures: Implements Schnorr Signatures to ensure data authenticity and non-repudiation.
+Watch the system in action: **Alice** (Sender) generates keys, loads an image, encrypts it using the C-Engine, and sends it to **Bob** (Receiver) who verifies the signature and decrypts the content.
 
-    Secure Key Exchange: Uses EC-ElGamal (Elliptic Curve ElGamal) for secure asymmetric key sharing between users.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/6bff15f6-d872-47ed-94e5-febc7f2d12e3" alt="Twofish Hybrid Encryption Demo" width="100%">
+</p>
 
-    Modern GUI: A user-friendly Python interface to load images, manage keys, and visualize encryption results in real-time.
+---
 
-🛠️ Tech Stack
+## 🚀 Features
 
-    Frontend: Python (Tkinter / CustomTkinter)
+* **⚡ Hybrid Architecture:** The core encryption logic is written in **C** (compiled to `.dll`/`.so`) and accessed via Python's `ctypes` for maximum performance, handling heavy image processing instantly.
+* **🔑 Twofish Algorithm:** Full implementation of the Twofish block cipher (AES finalist) with support for 128/192/256-bit keys.
+* **🔄 OFB Mode:** Uses Output Feedback Mode to function as a synchronous stream cipher, allowing encryption of data without padding.
+* **✍️ Digital Signatures:** Implements **Schnorr Signatures** to ensure data authenticity and non-repudiation.
+* **🛡️ Secure Key Exchange:** Uses **EC-ElGamal** (Elliptic Curve ElGamal) for secure asymmetric key sharing.
+* **🎨 Modern GUI:** Built with **CustomTkinter**, offering a dark-mode interface that visualizes the encrypted byte matrix in real-time.
 
-    Backend / Engine: C (Standard C99)
+---
 
-    Interoperability: Python ctypes library
+## 🛠️ Tech Stack
 
-    Cryptography: Twofish, Schnorr Group, Elliptic Curves
+* **Frontend:** Python (CustomTkinter, Pillow)
+* **Backend / Engine:** C (Standard C99)
+* **Interoperability:** Python `ctypes` library
+* **Cryptography:** Twofish, Schnorr Group, Elliptic Curves
 
-    Image Processing: Pillow (PIL)
+---
 
-📸 Screenshots
-Original Image	Encrypted Image (Chaos)	Decrypted Image
-		
+## ⚙️ Installation & Setup
 
-(Note: Replace these links with actual screenshots from your application)
-⚙️ Installation & Setup
-Prerequisites
+### Prerequisites
+1.  **Python 3.x** installed.
+2.  **GCC Compiler** (MinGW for Windows or standard GCC for Linux).
 
-    Python 3.x installed.
-
-    GCC Compiler (MinGW for Windows or standard GCC for Linux).
-
-1. Clone the Repository
-Bash
-
-git clone https://github.com/your-username/twofish-hybrid-encryption.git
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/FoaadAbbas/twofish-hybrid-encryption.git](https://github.com/FoaadAbbas/twofish-hybrid-encryption.git)
 cd twofish-hybrid-encryption
 
 2. Compile the C Engine
 
-The Python script relies on a shared library. You must compile the C code first.
+The Python script relies on a shared library. You must compile the C code before running the app.
 
 On Windows (using MinGW):
 Bash
 
-gcc -shared -o twofish.dll twofish.c -O3
+gcc -shared -o twofish.dll c_engine/twofish.c -O3
 
 On Linux:
 Bash
 
-gcc -shared -o twofish.so -fPIC twofish.c -O3
+gcc -shared -o twofish.so -fPIC c_engine/twofish.c -O3
 
 3. Install Python Dependencies
 Bash
 
-pip install pillow
+pip install customtkinter pillow
 
-💻 Usage
+💻 Usage Guide
 
     Run the Application:
     Bash
 
     python main.py
 
-    Generate Keys: Click the "Generate Keys" button to create your Schnorr and ElGamal key pairs.
+    Generate Keys:
 
-    Load Image: Select an image (.jpg, .png, .bmp) from your computer.
+        Click the "Generate Keys" button. This creates Schnorr and ElGamal key pairs for both Alice and Bob in the background.
 
-    Encrypt:
+    Alice's Role (Sender):
 
-        The system utilizes the C-DLL to process the image bytes via Twofish-OFB.
+        Click "Load Image" and select a file (.jpg, .png).
 
-        The session key is encrypted using EC-ElGamal.
+        The system encrypts the image using the C-DLL (Twofish-OFB).
 
-        The image is signed using Schnorr.
+        The session key is encrypted with Bob's public key.
 
-    Decrypt: Load an encrypted file and use the private key to restore the original image.
+        The package is signed with Alice's private key.
+
+    Bob's Role (Receiver):
+
+        The encrypted "Chaos" matrix is displayed.
+
+        Click "Decrypt".
+
+        The system verifies Alice's signature, decrypts the session key, and restores the original image.
 
 🧠 Cryptographic Implementation Details
 Why Hybrid (C + Python)?
 
-Python is excellent for UI development but slow for bitwise operations required in cryptography. By offloading the encrypt and decrypt loops to C, we achieve processing speeds comparable to native applications, allowing for real-time encryption of high-resolution images.
+Python is excellent for rapid UI development but can be slow for intensive bitwise operations required in cryptography loops. By offloading the encrypt and decrypt functions to C, we achieve execution speeds comparable to native applications, allowing for real-time encryption of high-resolution images without UI freezing.
 Twofish OFB Mode
 
-We use Output Feedback (OFB) mode. This turns the block cipher into a synchronous stream cipher.
+We use Output Feedback (OFB) mode.
 
-    Advantage: No padding is required. The ciphertext is exactly the same size as the plaintext.
+    Stream Cipher Behavior: Converts the block cipher into a stream cipher.
 
-    Advantage: Bit errors in transmission do not propagate to affect the rest of the block.
+    No Padding: The ciphertext is exactly the same size as the plaintext.
 
-Authentication (Schnorr)
+    Error Resilience: Bit errors in transmission do not propagate to affect the rest of the block, making it robust for image data.
 
-To prevent tampering, the message is signed using the Schnorr Signature scheme. This proves that the sender possesses the private key and that the message has not been altered.
 📂 Project Structure
+Plaintext
 
 twofish-project/
 │
 ├── c_engine/
-│   ├── twofish.c       # Core C implementation
-│   ├── twofish.h       # Header file
-│   └── Makefile        # Compilation instructions
+│   ├── twofish.c       # Core C implementation (The Engine)
+│   └── twofish.h       # Header file
 │
 ├── gui/
-│   ├── main.py         # Main GUI entry point
-│   └── ui_components.py
+│   ├── main.py         # Main Entry Point
+│   └── ui_utils.py     # UI Helper functions
 │
 ├── crypto/
-│   ├── wrapper.py      # CTypes wrapper for the DLL
-│   ├── schnorr.py      # Python impl of Schnorr
-│   └── elgamal.py      # Python impl of EC-ElGamal
+│   ├── wrapper.py      # CTypes wrapper (Bridge between C and Python)
+│   ├── schnorr.py      # Schnorr Signature implementation
+│   └── elgamal.py      # EC-ElGamal implementation
 │
-├── twofish.dll         # Compiled library (Windows)
-├── twofish.so          # Compiled library (Linux)
-├── requirements.txt
-└── README.md
+├── twofish.dll         # Compiled Library (Windows)
+├── requirements.txt    # Dependencies
+└── README.md           # Documentation
 
 🤝 Contributing
 
-Contributions are welcome! Please fork the repository and create a pull request for any features or bug fixes.
+Contributions are welcome! Please fork the repository and create a pull request for any features, bug fixes, or documentation improvements.
 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
